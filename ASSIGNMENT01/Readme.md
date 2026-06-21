@@ -49,43 +49,7 @@ Git
 GitHub
 Visual Studio Code
 Render
-Project Structure
-ASSIGNMENT1/
-│
-├── .github/
-│   ├── copilot-instructions.md
-│   ├── copilot-context.md
-│   ├── copilot-session.md
-│   ├── copilot-review.md
-│   └── copilot-fix-plan.md
-│
-├── app.js
-├── package.json
-├── README.md
-│
-├── routes/
-│   └── index.js
-│
-├── views/
-│   ├── layout.hbs
-│   ├── index.hbs
-│   ├── about.hbs
-│   ├── projects.hbs
-│   ├── contact.hbs
-│   └── error.hbs
-│
-└── public/
-    ├── images/
-    │   └── profile.jpg
-    │
-    └── stylesheets/
-        └── style.css
-Route List
-Route	Page
-/	Home
-/about	About Me
-/projects	Projects
-/contact	Contact Me
+
 Page Descriptions
 Home
 
