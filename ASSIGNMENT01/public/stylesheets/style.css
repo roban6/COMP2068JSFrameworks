@@ -1,8 +1,329 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+/* 
+  Robanpreet Singh Portfolio Website
+  Main stylesheet for layout, navigation, pages, cards, and responsive design.
+*/
+
+/* Global reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-a {
-  color: #00B7FF;
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+  background-color: #f4f7fb;
+  color: #1f2937;
+}
+
+/* Header and navigation */
+.site-header {
+  background-color: #0f172a;
+  color: #ffffff;
+  padding: 18px 8%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.3rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+}
+
+.nav-links a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #38bdf8;
+}
+
+/* Main content wrapper */
+.main-content {
+  min-height: 80vh;
+}
+
+/* Home page hero section */
+.hero-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 50px;
+  padding: 80px 8%;
+  background: linear-gradient(135deg, #e0f2fe, #f8fafc);
+}
+
+.hero-text {
+  flex: 1;
+}
+
+.hero-text h1 {
+  font-size: 3rem;
+  color: #0f172a;
+  margin-bottom: 15px;
+}
+
+.hero-text h2 {
+  font-size: 1.4rem;
+  color: #2563eb;
+  margin-bottom: 20px;
+}
+
+.hero-text p {
+  max-width: 600px;
+  font-size: 1.05rem;
+  margin-bottom: 30px;
+  color: #374151;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.primary-btn {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+.primary-btn:hover {
+  background-color: #1d4ed8;
+}
+
+.secondary-btn {
+  border: 2px solid #2563eb;
+  color: #2563eb;
+  background-color: transparent;
+}
+
+.secondary-btn:hover {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+/* Profile image area */
+.hero-image {
+  flex: 0.8;
+  display: flex;
+  justify-content: center;
+}
+
+.hero-image img {
+  width: 280px;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 6px solid #ffffff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.25);
+  background-color: #cbd5e1;
+}
+
+/* General page sections */
+.page-section {
+  padding: 70px 8%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-section h1 {
+  font-size: 2.5rem;
+  color: #0f172a;
+  margin-bottom: 25px;
+}
+
+.page-section h2 {
+  color: #1e3a8a;
+  margin-top: 35px;
+  margin-bottom: 15px;
+}
+
+.page-section h3 {
+  color: #0f172a;
+  margin-bottom: 10px;
+}
+
+.page-section p {
+  margin-bottom: 18px;
+  font-size: 1.02rem;
+  color: #374151;
+}
+
+/* Skills section */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  margin-top: 25px;
+}
+
+.skills-grid div {
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.08);
+}
+
+.skills-grid ul {
+  margin-left: 20px;
+}
+
+.skills-grid li {
+  margin-bottom: 8px;
+}
+
+/* Projects page */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.project-card {
+  background-color: #ffffff;
+  padding: 28px;
+  border-radius: 12px;
+  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.08);
+  border-top: 5px solid #2563eb;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 25px rgba(15, 23, 42, 0.15);
+}
+
+.project-card h2 {
+  margin-top: 0;
+  color: #0f172a;
+}
+
+/* Contact page */
+.contact-section {
+  max-width: 900px;
+}
+
+.contact-card {
+  background-color: #ffffff;
+  padding: 30px;
+  margin: 25px 0;
+  border-radius: 12px;
+  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.08);
+}
+
+.contact-card a {
+  color: #2563eb;
+  text-decoration: none;
+  word-break: break-word;
+}
+
+.contact-card a:hover {
+  text-decoration: underline;
+}
+
+/* Footer */
+.site-footer {
+  background-color: #0f172a;
+  color: #ffffff;
+  text-align: center;
+  padding: 25px 8%;
+}
+
+.site-footer p {
+  margin-bottom: 8px;
+}
+
+.site-footer a {
+  color: #38bdf8;
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive design for tablets and phones */
+@media screen and (max-width: 900px) {
+  .hero-section {
+    flex-direction: column;
+    text-align: center;
+    padding: 60px 6%;
+  }
+
+  .hero-text h1 {
+    font-size: 2.4rem;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+  }
+
+  .skills-grid,
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .navbar {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .hero-text h1 {
+    font-size: 2rem;
+  }
+
+  .hero-text h2 {
+    font-size: 1.1rem;
+  }
+
+  .hero-image img {
+    width: 220px;
+    height: 220px;
+  }
+
+  .page-section {
+    padding: 50px 6%;
+  }
+
+  .page-section h1 {
+    font-size: 2rem;
+  }
 }
