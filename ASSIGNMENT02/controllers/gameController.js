@@ -2,11 +2,12 @@ const Game = require('../models/Game');
 
 
 
-// =====================================
-// PUBLIC GAME LIST + FUZZY SEARCH
-// =====================================
+// ==========================================
+// PUBLIC GAME LIST + KEYWORD/FUZZY SEARCH
+// ==========================================
 
 exports.index = async function(req, res, next) {
+
 
     try {
 
@@ -14,15 +15,66 @@ exports.index = async function(req, res, next) {
         let games;
 
 
-        if (req.query.search) {
+
+        if (req.query.search && req.query.search.trim() !== '') {
 
 
-            games = await Game.fuzzySearch(
-                req.query.search
-            );
+            const keyword = req.query.search.trim();
 
 
-        } else {
+
+            // First perform normal keyword search
+
+            games = await Game.find({
+
+                $or: [
+
+                    {
+                        title: {
+                            $regex: keyword,
+                            $options: 'i'
+                        }
+                    },
+
+
+                    {
+                        platform: {
+                            $regex: keyword,
+                            $options: 'i'
+                        }
+                    },
+
+
+                    {
+                        genre: {
+                            $regex: keyword,
+                            $options: 'i'
+                        }
+                    }
+
+                ]
+
+            });
+
+
+
+
+
+            // If no keyword matches, use fuzzy searching
+
+            if (games.length === 0) {
+
+
+                games = await Game.fuzzySearch(keyword);
+
+
+            }
+
+
+
+        } 
+        
+        else {
 
 
             games = await Game.find();
@@ -32,19 +84,28 @@ exports.index = async function(req, res, next) {
 
 
 
+
         res.render('games/index', {
+
 
             title: 'Video Game Collection',
 
+
             games: games,
 
+
             search: req.query.search || ''
+
+
 
         });
 
 
 
-    } catch(error) {
+    }
+
+
+    catch(error) {
 
 
         next(error);
@@ -52,14 +113,17 @@ exports.index = async function(req, res, next) {
 
     }
 
+
 };
 
 
 
 
-// =====================================
-// PRIVATE DASHBOARD
-// =====================================
+
+
+// ==========================================
+// PRIVATE DASHBOARD GAME MANAGEMENT
+// ==========================================
 
 exports.dashboard = async function(req, res, next) {
 
@@ -80,11 +144,15 @@ exports.dashboard = async function(req, res, next) {
             games: games
 
 
+
         });
 
 
 
-    } catch(error) {
+    }
+
+
+    catch(error) {
 
 
         next(error);
@@ -99,9 +167,10 @@ exports.dashboard = async function(req, res, next) {
 
 
 
-// =====================================
+
+// ==========================================
 // CREATE GAME PAGE
-// =====================================
+// ==========================================
 
 exports.create = function(req, res, next) {
 
@@ -122,9 +191,9 @@ exports.create = function(req, res, next) {
 
 
 
-// =====================================
-// SAVE NEW GAME
-// =====================================
+// ==========================================
+// STORE NEW GAME
+// ==========================================
 
 exports.store = async function(req, res, next) {
 
@@ -166,7 +235,10 @@ exports.store = async function(req, res, next) {
 
 
 
-    } catch(error) {
+    }
+
+
+    catch(error) {
 
 
         next(error);
@@ -182,9 +254,9 @@ exports.store = async function(req, res, next) {
 
 
 
-// =====================================
-// VIEW SINGLE GAME DETAILS
-// =====================================
+// ==========================================
+// SHOW SINGLE GAME DETAILS
+// ==========================================
 
 exports.show = async function(req, res, next) {
 
@@ -205,11 +277,15 @@ exports.show = async function(req, res, next) {
             game: game
 
 
+
         });
 
 
 
-    } catch(error) {
+    }
+
+
+    catch(error) {
 
 
         next(error);
@@ -225,9 +301,9 @@ exports.show = async function(req, res, next) {
 
 
 
-// =====================================
-// EDIT PAGE
-// =====================================
+// ==========================================
+// EDIT GAME PAGE
+// ==========================================
 
 exports.edit = async function(req, res, next) {
 
@@ -248,11 +324,15 @@ exports.edit = async function(req, res, next) {
             game: game
 
 
+
         });
 
 
 
-    } catch(error) {
+    }
+
+
+    catch(error) {
 
 
         next(error);
@@ -268,9 +348,9 @@ exports.edit = async function(req, res, next) {
 
 
 
-// =====================================
+// ==========================================
 // UPDATE GAME
-// =====================================
+// ==========================================
 
 exports.update = async function(req, res, next) {
 
@@ -305,6 +385,7 @@ exports.update = async function(req, res, next) {
                 personalRating: req.body.personalRating
 
 
+
             }
 
 
@@ -316,7 +397,10 @@ exports.update = async function(req, res, next) {
 
 
 
-    } catch(error) {
+    }
+
+
+    catch(error) {
 
 
         next(error);
@@ -332,9 +416,9 @@ exports.update = async function(req, res, next) {
 
 
 
-// =====================================
+// ==========================================
 // DELETE CONFIRMATION PAGE
-// =====================================
+// ==========================================
 
 exports.deleteConfirm = async function(req, res, next) {
 
@@ -355,11 +439,15 @@ exports.deleteConfirm = async function(req, res, next) {
             game: game
 
 
+
         });
 
 
 
-    } catch(error) {
+    }
+
+
+    catch(error) {
 
 
         next(error);
@@ -375,9 +463,9 @@ exports.deleteConfirm = async function(req, res, next) {
 
 
 
-// =====================================
+// ==========================================
 // DELETE GAME
-// =====================================
+// ==========================================
 
 exports.delete = async function(req, res, next) {
 
@@ -393,7 +481,10 @@ exports.delete = async function(req, res, next) {
 
 
 
-    } catch(error) {
+    }
+
+
+    catch(error) {
 
 
         next(error);
