@@ -6,11 +6,12 @@ var logger = require('morgan');
 
 var session = require('express-session');
 var passport = require('passport');
-var MongoStore = require('connect-mongo');
+var { MongoStore } = require('connect-mongo');
 
 var methodOverride = require('method-override');
 
 require('dotenv').config();
+
 
 var connectDB = require('./config/database');
 
@@ -25,15 +26,21 @@ var gamesRouter = require('./routes/games');
 var authRouter = require('./routes/auth');
 
 
+
 var app = express();
 
 
+
+// View engine setup
 
 app.set('views', path.join(__dirname, 'views'));
 
 app.set('view engine', 'hbs');
 
 
+
+
+// Middleware
 
 app.use(logger('dev'));
 
@@ -53,7 +60,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-// Sessions
+// Session configuration
 
 app.use(session({
 
@@ -63,21 +70,25 @@ app.use(session({
 
     saveUninitialized: false,
 
+
     store: MongoStore.create({
 
         mongoUrl: process.env.MONGODB_URI
 
     })
 
+
 }));
 
 
 
-// Passport
+
+// Passport configuration
 
 app.use(passport.initialize());
 
 app.use(passport.session());
+
 
 
 
@@ -93,6 +104,9 @@ app.use('/', authRouter);
 
 
 
+
+// 404 handler
+
 app.use(function(req, res, next) {
 
     next(createError(404));
@@ -102,14 +116,16 @@ app.use(function(req, res, next) {
 
 
 
+
+// Error handler
+
 app.use(function(err, req, res, next) {
 
 
     res.locals.message = err.message;
 
 
-    res.locals.error =
-        req.app.get('env') === 'development'
+    res.locals.error = req.app.get('env') === 'development'
         ? err
         : {};
 
@@ -122,6 +138,7 @@ app.use(function(err, req, res, next) {
 
 
 });
+
 
 
 
