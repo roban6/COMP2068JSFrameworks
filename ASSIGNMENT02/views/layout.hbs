@@ -9,9 +9,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-<title>
-{{title}}
-</title>
+<title>{{title}}</title>
+
 
 
 <link 
@@ -29,7 +28,7 @@ href="/stylesheets/style.css">
 
 
 
-<body>
+<body class="d-flex flex-column min-vh-100">
 
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -38,9 +37,13 @@ href="/stylesheets/style.css">
 <div class="container">
 
 
-<a class="navbar-brand" href="/">
+<a class="navbar-brand fw-bold" href="/">
+
 Video Game Tracker
+
 </a>
+
+
 
 
 
@@ -55,7 +58,6 @@ data-bs-target="#navbar">
 
 
 </button>
-
 
 
 
@@ -80,7 +82,6 @@ Home
 
 
 
-
 <li class="nav-item">
 
 <a class="nav-link" href="/games">
@@ -94,9 +95,7 @@ Browse Games
 
 
 
-
 {{#if user}}
-
 
 
 <li class="nav-item">
@@ -125,7 +124,6 @@ Welcome {{user.username}}
 
 
 
-
 <li class="nav-item">
 
 <a class="nav-link" href="/logout">
@@ -139,9 +137,7 @@ Logout
 
 
 
-
 {{else}}
-
 
 
 
@@ -158,7 +154,6 @@ Register
 
 
 
-
 <li class="nav-item">
 
 <a class="nav-link" href="/login">
@@ -171,18 +166,13 @@ Login
 
 
 
-
 {{/if}}
-
-
-
 
 
 </ul>
 
 
 </div>
-
 
 
 </div>
@@ -194,19 +184,19 @@ Login
 
 
 
-<div class="container mt-4">
+<main class="container mt-4 flex-grow-1">
 
 
 {{{body}}}
 
 
-</div>
+</main>
 
 
 
 
 
-<footer class="bg-dark text-white text-center mt-5 p-3">
+<footer class="bg-dark text-white text-center p-3 mt-auto">
 
 
 Video Game Collection Tracker © 2026
