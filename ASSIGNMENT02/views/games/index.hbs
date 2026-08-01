@@ -4,6 +4,7 @@ Video Game Collection
 
 
 
+
 <form method="GET" action="/games" class="mb-4">
 
 
@@ -18,10 +19,9 @@ name="search"
 
 class="form-control"
 
-placeholder="Search by title, platform, or genre"
+placeholder="Search games"
 
 value="{{search}}"
-
 
 >
 
@@ -31,6 +31,7 @@ value="{{search}}"
 Search
 
 </button>
+
 
 
 <a href="/games" class="btn btn-secondary">
@@ -44,16 +45,6 @@ Clear
 
 
 </form>
-
-
-
-
-
-<a href="/games/create" class="btn btn-success mb-3">
-
-Add New Game
-
-</a>
 
 
 
@@ -86,11 +77,6 @@ Genre
 </th>
 
 
-<th>
-Actions
-</th>
-
-
 </tr>
 
 
@@ -104,7 +90,6 @@ Actions
 
 
 {{#each games}}
-
 
 
 <tr>
@@ -125,39 +110,11 @@ Actions
 </td>
 
 
-<td>
-
-
-<a href="/games/{{_id}}" class="btn btn-primary btn-sm">
-
-View
-
-</a>
-
-
-<a href="/games/{{_id}}/edit" class="btn btn-warning btn-sm">
-
-Edit
-
-</a>
-
-
-<a href="/games/{{_id}}/delete" class="btn btn-danger btn-sm">
-
-Delete
-
-</a>
-
-
-</td>
-
-
 </tr>
 
 
 
 {{/each}}
-
 
 
 </tbody>
@@ -171,13 +128,11 @@ Delete
 {{else}}
 
 
-
 <div class="alert alert-info">
 
-No matching games found.
+No games found.
 
 </div>
-
 
 
 {{/if}}

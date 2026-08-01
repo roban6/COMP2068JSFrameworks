@@ -1,0 +1,104 @@
+<h1 class="mb-4">
+Manage Games
+</h1>
+
+
+
+<a href="/dashboard/games/create"
+class="btn btn-success mb-3">
+
+Add New Game
+
+</a>
+
+
+
+
+<table class="table table-striped">
+
+
+<thead>
+
+<tr>
+
+<th>
+Title
+</th>
+
+<th>
+Platform
+</th>
+
+<th>
+Genre
+</th>
+
+<th>
+Actions
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody>
+
+
+{{#each games}}
+
+
+<tr>
+
+
+<td>
+{{title}}
+</td>
+
+
+<td>
+{{platform}}
+</td>
+
+
+<td>
+{{genre}}
+</td>
+
+
+<td>
+
+
+<a href="/dashboard/games/{{_id}}/edit"
+class="btn btn-warning btn-sm">
+
+Edit
+
+</a>
+
+
+
+<a href="/dashboard/games/{{_id}}/delete"
+class="btn btn-danger btn-sm">
+
+Delete
+
+</a>
+
+
+</td>
+
+
+</tr>
+
+
+{{/each}}
+
+
+</tbody>
+
+
+</table>

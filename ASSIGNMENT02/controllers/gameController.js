@@ -2,10 +2,11 @@ const Game = require('../models/Game');
 
 
 
-// Display all games or fuzzy search results
+// =====================================
+// PUBLIC GAME LIST + FUZZY SEARCH
+// =====================================
 
 exports.index = async function(req, res, next) {
-
 
     try {
 
@@ -13,8 +14,7 @@ exports.index = async function(req, res, next) {
         let games;
 
 
-
-        if(req.query.search) {
+        if (req.query.search) {
 
 
             games = await Game.fuzzySearch(
@@ -22,9 +22,7 @@ exports.index = async function(req, res, next) {
             );
 
 
-        }
-
-        else {
+        } else {
 
 
             games = await Game.find();
@@ -36,24 +34,57 @@ exports.index = async function(req, res, next) {
 
         res.render('games/index', {
 
-
             title: 'Video Game Collection',
-
 
             games: games,
 
-
             search: req.query.search || ''
+
+        });
+
+
+
+    } catch(error) {
+
+
+        next(error);
+
+
+    }
+
+};
+
+
+
+
+// =====================================
+// PRIVATE DASHBOARD
+// =====================================
+
+exports.dashboard = async function(req, res, next) {
+
+
+    try {
+
+
+        const games = await Game.find();
+
+
+
+        res.render('games/dashboard', {
+
+
+            title: 'Manage Games',
+
+
+            games: games
 
 
         });
 
 
 
-    }
-
-
-    catch(error) {
+    } catch(error) {
 
 
         next(error);
@@ -68,14 +99,18 @@ exports.index = async function(req, res, next) {
 
 
 
-// Display create page
+// =====================================
+// CREATE GAME PAGE
+// =====================================
 
-exports.create = function(req,res,next){
+exports.create = function(req, res, next) {
 
 
-    res.render('games/create',{
+    res.render('games/create', {
 
-        title:'Add Game'
+
+        title: 'Add Game'
+
 
     });
 
@@ -86,27 +121,52 @@ exports.create = function(req,res,next){
 
 
 
-// Save game
 
-exports.store = async function(req,res,next){
+// =====================================
+// SAVE NEW GAME
+// =====================================
+
+exports.store = async function(req, res, next) {
 
 
-    try{
+    try {
 
 
-        const game = new Game(req.body);
+        const game = new Game({
+
+
+            title: req.body.title,
+
+
+            platform: req.body.platform,
+
+
+            genre: req.body.genre,
+
+
+            releaseYear: req.body.releaseYear,
+
+
+            completionStatus: req.body.completionStatus,
+
+
+            personalRating: req.body.personalRating
+
+
+
+        });
+
 
 
         await game.save();
 
 
-        res.redirect('/games');
+
+        res.redirect('/dashboard/games');
 
 
-    }
 
-
-    catch(error){
+    } catch(error) {
 
 
         next(error);
@@ -121,30 +181,35 @@ exports.store = async function(req,res,next){
 
 
 
-// Display single game
 
-exports.show = async function(req,res,next){
+// =====================================
+// VIEW SINGLE GAME DETAILS
+// =====================================
+
+exports.show = async function(req, res, next) {
 
 
-    try{
+    try {
 
 
         const game = await Game.findById(req.params.id);
 
 
-        res.render('games/details',{
 
-            title:game.title,
+        res.render('games/details', {
 
-            game:game
+
+            title: game.title,
+
+
+            game: game
+
 
         });
 
 
-    }
 
-
-    catch(error){
+    } catch(error) {
 
 
         next(error);
@@ -159,28 +224,35 @@ exports.show = async function(req,res,next){
 
 
 
-exports.edit = async function(req,res,next){
+
+// =====================================
+// EDIT PAGE
+// =====================================
+
+exports.edit = async function(req, res, next) {
 
 
-    try{
+    try {
 
 
         const game = await Game.findById(req.params.id);
 
 
-        res.render('games/edit',{
 
-            title:'Edit Game',
+        res.render('games/edit', {
 
-            game:game
+
+            title: 'Edit Game',
+
+
+            game: game
+
 
         });
 
 
-    }
 
-
-    catch(error){
+    } catch(error) {
 
 
         next(error);
@@ -195,28 +267,56 @@ exports.edit = async function(req,res,next){
 
 
 
-exports.update = async function(req,res,next){
+
+// =====================================
+// UPDATE GAME
+// =====================================
+
+exports.update = async function(req, res, next) {
 
 
-    try{
+    try {
 
 
         await Game.findByIdAndUpdate(
 
+
             req.params.id,
 
-            req.body
+
+            {
+
+
+                title: req.body.title,
+
+
+                platform: req.body.platform,
+
+
+                genre: req.body.genre,
+
+
+                releaseYear: req.body.releaseYear,
+
+
+                completionStatus: req.body.completionStatus,
+
+
+                personalRating: req.body.personalRating
+
+
+            }
+
 
         );
 
 
-        res.redirect('/games');
+
+        res.redirect('/dashboard/games');
 
 
-    }
 
-
-    catch(error){
+    } catch(error) {
 
 
         next(error);
@@ -231,28 +331,35 @@ exports.update = async function(req,res,next){
 
 
 
-exports.deleteConfirm = async function(req,res,next){
+
+// =====================================
+// DELETE CONFIRMATION PAGE
+// =====================================
+
+exports.deleteConfirm = async function(req, res, next) {
 
 
-    try{
+    try {
 
 
         const game = await Game.findById(req.params.id);
 
 
-        res.render('games/delete',{
 
-            title:'Delete Game',
+        res.render('games/delete', {
 
-            game:game
+
+            title: 'Delete Game',
+
+
+            game: game
+
 
         });
 
 
-    }
 
-
-    catch(error){
+    } catch(error) {
 
 
         next(error);
@@ -267,22 +374,26 @@ exports.deleteConfirm = async function(req,res,next){
 
 
 
-exports.delete = async function(req,res,next){
+
+// =====================================
+// DELETE GAME
+// =====================================
+
+exports.delete = async function(req, res, next) {
 
 
-    try{
+    try {
 
 
         await Game.findByIdAndDelete(req.params.id);
 
 
-        res.redirect('/games');
+
+        res.redirect('/dashboard/games');
 
 
-    }
 
-
-    catch(error){
+    } catch(error) {
 
 
         next(error);

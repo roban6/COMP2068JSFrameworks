@@ -10,6 +10,7 @@ var { MongoStore } = require('connect-mongo');
 
 var methodOverride = require('method-override');
 
+
 require('dotenv').config();
 
 
@@ -21,8 +22,13 @@ connectDB();
 require('./config/passport')(passport);
 
 
+
 var indexRouter = require('./routes/index');
+
 var gamesRouter = require('./routes/games');
+
+var dashboardRouter = require('./routes/dashboard');
+
 var authRouter = require('./routes/auth');
 
 
@@ -31,7 +37,6 @@ var app = express();
 
 
 
-// View engine setup
 
 app.set('views', path.join(__dirname, 'views'));
 
@@ -40,14 +45,15 @@ app.set('view engine', 'hbs');
 
 
 
-// Middleware
-
 app.use(logger('dev'));
 
 app.use(express.json());
 
+
 app.use(express.urlencoded({
-    extended: false
+
+    extended:false
+
 }));
 
 
@@ -55,25 +61,32 @@ app.use(methodOverride('_method'));
 
 app.use(cookieParser());
 
-app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(express.static(path.join(__dirname,'public')));
 
 
 
 
-// Session configuration
+
+// Session
 
 app.use(session({
 
-    secret: process.env.SESSION_SECRET || 'videogame-secret',
 
-    resave: false,
-
-    saveUninitialized: false,
+    secret:process.env.SESSION_SECRET,
 
 
-    store: MongoStore.create({
+    resave:false,
 
-        mongoUrl: process.env.MONGODB_URI
+
+    saveUninitialized:false,
+
+
+    store:MongoStore.create({
+
+
+        mongoUrl:process.env.MONGODB_URI
+
 
     })
 
@@ -83,7 +96,6 @@ app.use(session({
 
 
 
-// Passport configuration
 
 app.use(passport.initialize());
 
@@ -95,19 +107,23 @@ app.use(passport.session());
 
 // Routes
 
-app.use('/', indexRouter);
-
-app.use('/games', gamesRouter);
-
-app.use('/', authRouter);
+app.use('/',indexRouter);
 
 
+app.use('/games',gamesRouter);
+
+
+app.use('/dashboard',dashboardRouter);
+
+
+app.use('/',authRouter);
 
 
 
-// 404 handler
 
-app.use(function(req, res, next) {
+
+
+app.use(function(req,res,next){
 
     next(createError(404));
 
@@ -117,17 +133,17 @@ app.use(function(req, res, next) {
 
 
 
-// Error handler
-
-app.use(function(err, req, res, next) {
+app.use(function(err,req,res,next){
 
 
     res.locals.message = err.message;
 
 
     res.locals.error = req.app.get('env') === 'development'
-        ? err
-        : {};
+
+    ? err
+
+    : {};
 
 
 
