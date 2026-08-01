@@ -1,5 +1,10 @@
 const LocalStrategy = require('passport-local').Strategy;
 
+const GitHubStrategy = require('passport-github2').Strategy;
+
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+
+
 const bcrypt = require('bcrypt');
 
 const User = require('../models/User');
@@ -9,129 +14,271 @@ const User = require('../models/User');
 module.exports = function(passport) {
 
 
-    passport.use(
 
-        new LocalStrategy(
+passport.use(
 
-        {
+new LocalStrategy(
 
-            usernameField: 'email'
+{
+usernameField:'email'
+},
 
-        },
+async function(email,password,done){
 
 
-        async function(email, password, done) {
+try{
 
 
-            try {
+const user = await User.findOne({
+email:email
+});
 
 
-                const user = await User.findOne({
+if(!user){
 
-                    email: email
+return done(null,false);
 
-                });
+}
 
 
+const match = await bcrypt.compare(
 
-                if(!user) {
+password,
 
+user.password
 
-                    return done(null, false);
+);
 
 
-                }
 
+if(match){
 
+return done(null,user);
 
-                const match = await bcrypt.compare(
+}
 
-                    password,
 
-                    user.password
+return done(null,false);
 
-                );
 
+}
 
+catch(error){
 
-                if(match) {
+return done(error);
 
+}
 
-                    return done(null, user);
 
+})
 
-                }
+);
 
 
-                else {
 
 
-                    return done(null, false);
 
 
-                }
+passport.use(
 
+new GitHubStrategy(
 
+{
 
-            }
+clientID:process.env.GITHUB_CLIENT_ID,
 
+clientSecret:process.env.GITHUB_CLIENT_SECRET,
 
-            catch(error) {
+callbackURL:process.env.GITHUB_CALLBACK_URL
 
+},
 
-                return done(error);
 
+async function(accessToken,refreshToken,profile,done){
 
-            }
 
+try{
 
-        })
 
+let user = await User.findOne({
 
-    );
+githubId:profile.id
 
+});
 
 
 
+if(!user){
 
-    passport.serializeUser(function(user, done) {
 
+user = new User({
 
-        done(null, user.id);
 
+username:profile.username,
 
-    });
 
+email: profile.emails
+? profile.emails[0].value
+: `${profile.username}@github.com`,
 
 
+password:'oauth-user',
 
 
-    passport.deserializeUser(async function(id, done) {
+githubId:profile.id
 
 
-        try {
+});
 
 
-            const user = await User.findById(id);
+await user.save();
 
 
-            done(null, user);
+}
 
 
-        }
 
+return done(null,user);
 
-        catch(error) {
 
+}
 
-            done(error);
+catch(error){
 
+return done(error);
 
-        }
+}
 
 
-    });
+})
 
+
+);
+
+
+
+
+
+
+
+
+passport.use(
+
+new GoogleStrategy(
+
+{
+
+clientID:process.env.GOOGLE_CLIENT_ID,
+
+clientSecret:process.env.GOOGLE_CLIENT_SECRET,
+
+callbackURL:process.env.GOOGLE_CALLBACK_URL
+
+},
+
+
+
+async function(accessToken,refreshToken,profile,done){
+
+
+
+try{
+
+
+let user = await User.findOne({
+
+googleId:profile.id
+
+});
+
+
+
+
+if(!user){
+
+
+user = new User({
+
+
+username:profile.displayName,
+
+
+email:profile.emails[0].value,
+
+
+password:'oauth-user',
+
+
+googleId:profile.id
+
+
+});
+
+
+await user.save();
+
+
+}
+
+
+
+return done(null,user);
+
+
+
+}
+
+catch(error){
+
+return done(error);
+
+}
+
+
+
+})
+
+
+);
+
+
+
+
+
+
+
+passport.serializeUser(function(user,done){
+
+done(null,user.id);
+
+});
+
+
+
+
+
+passport.deserializeUser(async function(id,done){
+
+
+try{
+
+
+const user = await User.findById(id);
+
+
+done(null,user);
+
+
+}
+
+catch(error){
+
+done(error);
+
+}
+
+
+});
 
 
 };
