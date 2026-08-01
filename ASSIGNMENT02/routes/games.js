@@ -7,21 +7,34 @@ const gameController = require('../controllers/gameController');
 
 
 
-// GET all games
-
 router.get('/', gameController.index);
 
 
 
-// GET create game form
-
 router.get('/create', gameController.create);
 
 
-
-// POST create game
-
 router.post('/create', gameController.store);
+
+
+
+router.get('/:id', gameController.show);
+
+
+
+router.get('/:id/edit', gameController.edit);
+
+
+
+router.put('/:id', gameController.update);
+
+
+
+router.get('/:id/delete', gameController.deleteConfirm);
+
+
+
+router.delete('/:id', gameController.delete);
 
 
 

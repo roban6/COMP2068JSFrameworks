@@ -3,7 +3,13 @@ const mongoose = require('mongoose');
 
 function connectDB() {
 
-    mongoose.connect(process.env.MONGODB_URI)
+    mongoose.connect(process.env.MONGODB_URI, {
+
+        useNewUrlParser: true,
+
+        useUnifiedTopology: true
+
+    })
     .then(() => {
 
         console.log('MongoDB Connected Successfully');
@@ -11,7 +17,7 @@ function connectDB() {
     })
     .catch((error) => {
 
-        console.log('MongoDB Connection Error:');
+        console.log('MongoDB Connection Error');
 
         console.log(error);
 
