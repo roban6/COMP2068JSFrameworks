@@ -5,36 +5,58 @@ const router = express.Router();
 
 const gameController = require('../controllers/gameController');
 
+const auth = require('../middleware/auth');
 
+
+
+// Public read-only game list
 
 router.get('/', gameController.index);
 
 
 
-router.get('/create', gameController.create);
-
-
-router.post('/create', gameController.store);
+// Everything below this requires login
 
 
 
-router.get('/:id', gameController.show);
+router.get('/create',
+auth.isAuthenticated,
+gameController.create);
 
 
 
-router.get('/:id/edit', gameController.edit);
+router.post('/create',
+auth.isAuthenticated,
+gameController.store);
 
 
 
-router.put('/:id', gameController.update);
+router.get('/:id',
+gameController.show);
 
 
 
-router.get('/:id/delete', gameController.deleteConfirm);
+router.get('/:id/edit',
+auth.isAuthenticated,
+gameController.edit);
 
 
 
-router.delete('/:id', gameController.delete);
+router.put('/:id',
+auth.isAuthenticated,
+gameController.update);
+
+
+
+router.get('/:id/delete',
+auth.isAuthenticated,
+gameController.deleteConfirm);
+
+
+
+router.delete('/:id',
+auth.isAuthenticated,
+gameController.delete);
 
 
 
