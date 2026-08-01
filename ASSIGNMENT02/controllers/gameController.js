@@ -2,29 +2,65 @@ const Game = require('../models/Game');
 
 
 
-// Display all games
+// Display all games or fuzzy search results
 
 exports.index = async function(req, res, next) {
 
+
     try {
 
-        const games = await Game.find();
+
+        let games;
+
+
+
+        if(req.query.search) {
+
+
+            games = await Game.fuzzySearch(
+                req.query.search
+            );
+
+
+        }
+
+        else {
+
+
+            games = await Game.find();
+
+
+        }
+
 
 
         res.render('games/index', {
 
+
             title: 'Video Game Collection',
 
-            games: games
+
+            games: games,
+
+
+            search: req.query.search || ''
+
 
         });
 
 
-    } catch(error) {
+
+    }
+
+
+    catch(error) {
+
 
         next(error);
 
+
     }
+
 
 };
 
@@ -34,12 +70,12 @@ exports.index = async function(req, res, next) {
 
 // Display create page
 
-exports.create = function(req, res, next) {
+exports.create = function(req,res,next){
 
 
-    res.render('games/create', {
+    res.render('games/create',{
 
-        title: 'Add Game'
+        title:'Add Game'
 
     });
 
@@ -52,10 +88,10 @@ exports.create = function(req, res, next) {
 
 // Save game
 
-exports.store = async function(req, res, next) {
+exports.store = async function(req,res,next){
 
 
-    try {
+    try{
 
 
         const game = new Game(req.body);
@@ -69,9 +105,12 @@ exports.store = async function(req, res, next) {
 
     }
 
-    catch(error) {
+
+    catch(error){
+
 
         next(error);
+
 
     }
 
@@ -84,29 +123,28 @@ exports.store = async function(req, res, next) {
 
 // Display single game
 
-exports.show = async function(req, res, next) {
+exports.show = async function(req,res,next){
 
 
-    try {
+    try{
 
 
         const game = await Game.findById(req.params.id);
 
 
-        res.render('games/details', {
+        res.render('games/details',{
 
+            title:game.title,
 
-            title: game.title,
-
-            game: game
-
+            game:game
 
         });
 
 
     }
 
-    catch(error) {
+
+    catch(error){
 
 
         next(error);
@@ -121,31 +159,28 @@ exports.show = async function(req, res, next) {
 
 
 
-// Display edit page
-
-exports.edit = async function(req, res, next) {
+exports.edit = async function(req,res,next){
 
 
-    try {
+    try{
 
 
         const game = await Game.findById(req.params.id);
 
 
-        res.render('games/edit', {
+        res.render('games/edit',{
 
+            title:'Edit Game',
 
-            title: 'Edit Game',
-
-            game: game
-
+            game:game
 
         });
 
 
     }
 
-    catch(error) {
+
+    catch(error){
 
 
         next(error);
@@ -160,12 +195,10 @@ exports.edit = async function(req, res, next) {
 
 
 
-// Update game
-
-exports.update = async function(req, res, next) {
+exports.update = async function(req,res,next){
 
 
-    try {
+    try{
 
 
         await Game.findByIdAndUpdate(
@@ -182,7 +215,8 @@ exports.update = async function(req, res, next) {
 
     }
 
-    catch(error) {
+
+    catch(error){
 
 
         next(error);
@@ -197,31 +231,28 @@ exports.update = async function(req, res, next) {
 
 
 
-// Delete confirmation
-
-exports.deleteConfirm = async function(req, res, next) {
+exports.deleteConfirm = async function(req,res,next){
 
 
-    try {
+    try{
 
 
         const game = await Game.findById(req.params.id);
 
 
-        res.render('games/delete', {
+        res.render('games/delete',{
 
+            title:'Delete Game',
 
-            title: 'Delete Game',
-
-            game: game
-
+            game:game
 
         });
 
 
     }
 
-    catch(error) {
+
+    catch(error){
 
 
         next(error);
@@ -236,12 +267,10 @@ exports.deleteConfirm = async function(req, res, next) {
 
 
 
-// Delete game
-
-exports.delete = async function(req, res, next) {
+exports.delete = async function(req,res,next){
 
 
-    try {
+    try{
 
 
         await Game.findByIdAndDelete(req.params.id);
@@ -252,7 +281,8 @@ exports.delete = async function(req, res, next) {
 
     }
 
-    catch(error) {
+
+    catch(error){
 
 
         next(error);

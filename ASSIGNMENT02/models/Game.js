@@ -83,12 +83,12 @@ const gameSchema = new mongoose.Schema({
 
     }
 
+
 });
 
 
 
-// Required fuzzy searching package
-// Searches title, platform and genre
+// Enable fuzzy searching
 
 gameSchema.plugin(mongooseFuzzySearching, {
 
@@ -103,6 +103,7 @@ gameSchema.plugin(mongooseFuzzySearching, {
     ]
 
 });
+
 
 
 module.exports = mongoose.model('Game', gameSchema);
