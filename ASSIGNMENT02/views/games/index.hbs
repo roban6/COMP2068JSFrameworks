@@ -1,9 +1,25 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+
 <h1>
 Video Game Collection
 </h1>
 
 
+<a href="/games/create" class="btn btn-success">
+
+Add New Game
+
+</a>
+
+
+</div>
+
+
+
+
 {{#if games.length}}
+
 
 <table class="table table-striped">
 
@@ -16,26 +32,21 @@ Video Game Collection
 Title
 </th>
 
-
 <th>
 Platform
 </th>
-
 
 <th>
 Genre
 </th>
 
-
 <th>
 Year
 </th>
 
-
 <th>
 Status
 </th>
-
 
 <th>
 Rating
@@ -44,6 +55,7 @@ Rating
 </tr>
 
 </thead>
+
 
 
 
@@ -98,12 +110,15 @@ Rating
 </table>
 
 
+
 {{else}}
 
 
-<p>
+<div class="alert alert-info">
+
 No games available yet.
-</p>
+
+</div>
 
 
 {{/if}}

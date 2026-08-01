@@ -3,44 +3,25 @@ const express = require('express');
 const router = express.Router();
 
 
-const Game = require('../models/Game');
+const gameController = require('../controllers/gameController');
 
 
 
-// GET games list
+// GET all games
 
-router.get('/', async function(req, res, next) {
-
-
-    try {
+router.get('/', gameController.index);
 
 
-        const games = await Game.find();
+
+// GET create game form
+
+router.get('/create', gameController.create);
 
 
-        res.render('games/index', {
 
+// POST create game
 
-            title: 'Video Games',
-
-            games: games
-
-
-        });
-
-
-    }
-
-    catch(error) {
-
-
-        next(error);
-
-
-    }
-
-
-});
+router.post('/create', gameController.store);
 
 
 
