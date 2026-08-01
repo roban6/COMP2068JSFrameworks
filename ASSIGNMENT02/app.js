@@ -37,6 +37,7 @@ var app = express();
 
 
 
+// View engine setup
 
 app.set('views', path.join(__dirname, 'views'));
 
@@ -45,47 +46,52 @@ app.set('view engine', 'hbs');
 
 
 
+// Middleware
+
 app.use(logger('dev'));
+
 
 app.use(express.json());
 
 
 app.use(express.urlencoded({
 
-    extended:false
+    extended: false
 
 }));
 
 
 app.use(methodOverride('_method'));
 
+
 app.use(cookieParser());
 
 
-app.use(express.static(path.join(__dirname,'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 
 
 
-// Session
+
+// Session Configuration
 
 app.use(session({
 
 
-    secret:process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || 'videogame-secret',
 
 
-    resave:false,
+    resave: false,
 
 
-    saveUninitialized:false,
+    saveUninitialized: false,
 
 
-    store:MongoStore.create({
+    store: MongoStore.create({
 
 
-        mongoUrl:process.env.MONGODB_URI
+        mongoUrl: process.env.MONGODB_URI
 
 
     })
@@ -97,7 +103,12 @@ app.use(session({
 
 
 
+
+
+// Passport Authentication
+
 app.use(passport.initialize());
+
 
 app.use(passport.session());
 
@@ -105,27 +116,18 @@ app.use(passport.session());
 
 
 
-// Routes
-
-app.use('/',indexRouter);
 
 
-app.use('/games',gamesRouter);
+// Make logged-in user available to all views
+
+app.use(function(req, res, next) {
 
 
-app.use('/dashboard',dashboardRouter);
+    res.locals.user = req.user;
 
 
-app.use('/',authRouter);
+    next();
 
-
-
-
-
-
-app.use(function(req,res,next){
-
-    next(createError(404));
 
 });
 
@@ -133,7 +135,50 @@ app.use(function(req,res,next){
 
 
 
-app.use(function(err,req,res,next){
+
+
+// Routes
+
+
+app.use('/', indexRouter);
+
+
+app.use('/games', gamesRouter);
+
+
+app.use('/dashboard', dashboardRouter);
+
+
+app.use('/', authRouter);
+
+
+
+
+
+
+
+
+// Catch 404 Error
+
+
+app.use(function(req, res, next) {
+
+
+    next(createError(404));
+
+
+});
+
+
+
+
+
+
+
+// Error Handler
+
+
+app.use(function(err, req, res, next) {
 
 
     res.locals.message = err.message;
@@ -141,9 +186,9 @@ app.use(function(err,req,res,next){
 
     res.locals.error = req.app.get('env') === 'development'
 
-    ? err
+        ? err
 
-    : {};
+        : {};
 
 
 
@@ -154,6 +199,8 @@ app.use(function(err,req,res,next){
 
 
 });
+
+
 
 
 

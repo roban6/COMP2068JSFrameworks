@@ -1,12 +1,39 @@
-<div class="d-flex justify-content-between mb-4">
+<div class="text-center">
 
-<h1>
-Video Game Collection
+
+<h1 class="display-4">
+Video Game Collection Tracker
 </h1>
 
 
-<a href="/games/create" class="btn btn-success">
-Add Game
+
+<p class="lead mt-4">
+
+Track, search, and manage your favourite video games in one place.
+
+</p>
+
+
+
+<hr>
+
+
+
+<div class="mt-4">
+
+
+<a href="/games" class="btn btn-primary btn-lg">
+
+Browse Games
+
+</a>
+
+
+
+<a href="/register" class="btn btn-success btn-lg">
+
+Create Account
+
 </a>
 
 
@@ -14,78 +41,4 @@ Add Game
 
 
 
-{{#if games.length}}
-
-<table class="table table-striped">
-
-
-<tr>
-
-<th>Title</th>
-<th>Platform</th>
-<th>Genre</th>
-<th>Actions</th>
-
-</tr>
-
-
-
-{{#each games}}
-
-<tr>
-
-
-<td>
-{{title}}
-</td>
-
-
-<td>
-{{platform}}
-</td>
-
-
-<td>
-{{genre}}
-</td>
-
-
-<td>
-
-
-<a href="/games/{{_id}}" class="btn btn-primary btn-sm">
-View
-</a>
-
-
-<a href="/games/{{_id}}/edit" class="btn btn-warning btn-sm">
-Edit
-</a>
-
-
-<a href="/games/{{_id}}/delete" class="btn btn-danger btn-sm">
-Delete
-</a>
-
-
-</td>
-
-
-</tr>
-
-
-{{/each}}
-
-
-</table>
-
-
-{{else}}
-
-<div class="alert alert-info">
-
-No games available.
-
 </div>
-
-{{/if}}
