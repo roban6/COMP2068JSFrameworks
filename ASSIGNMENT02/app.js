@@ -13,6 +13,8 @@ connectDB();
 
 var indexRouter = require('./routes/index');
 
+var gamesRouter = require('./routes/games');
+
 
 var app = express();
 
@@ -37,33 +39,44 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+
 // Routes
 
 app.use('/', indexRouter);
+
+app.use('/games', gamesRouter);
+
 
 
 // 404 handler
 
 app.use(function(req, res, next) {
 
-  next(createError(404));
+    next(createError(404));
 
 });
+
 
 
 // Error handler
 
 app.use(function(err, req, res, next) {
 
-  res.locals.message = err.message;
 
-  res.locals.error = req.app.get('env') === 'development'
-      ? err
-      : {};
+    res.locals.message = err.message;
 
-  res.status(err.status || 500);
 
-  res.render('error');
+    res.locals.error = req.app.get('env') === 'development'
+        ? err
+        : {};
+
+
+
+    res.status(err.status || 500);
+
+
+    res.render('error');
+
 
 });
 
