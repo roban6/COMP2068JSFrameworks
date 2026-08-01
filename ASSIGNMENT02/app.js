@@ -4,13 +4,23 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+require('dotenv').config();
+
+var connectDB = require('./config/database');
+
+connectDB();
+
+
 var indexRouter = require('./routes/index');
+
 
 var app = express();
 
 
 // View engine setup
+
 app.set('views', path.join(__dirname, 'views'));
+
 app.set('view engine', 'hbs');
 
 
@@ -28,10 +38,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // Routes
+
 app.use('/', indexRouter);
 
 
-// Catch 404 and forward to error handler
+// 404 handler
+
 app.use(function(req, res, next) {
 
   next(createError(404));
@@ -40,13 +52,14 @@ app.use(function(req, res, next) {
 
 
 // Error handler
+
 app.use(function(err, req, res, next) {
 
   res.locals.message = err.message;
 
   res.locals.error = req.app.get('env') === 'development'
-    ? err
-    : {};
+      ? err
+      : {};
 
   res.status(err.status || 500);
 
